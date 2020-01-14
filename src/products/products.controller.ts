@@ -1,18 +1,19 @@
-import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Res, Req } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { response } from 'express';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly ProductsService: ProductsService) { }
 
   // Add Product
-
   @Post()
   addProduct(
     @Body('title') prodTitle: string,
     @Body('desc') prodDesc: string,
     @Body('price') prodPrice: number
 
+    // @Res() response: Response
   ) {
 
     const generatedId = this.ProductsService.insertProduct(
