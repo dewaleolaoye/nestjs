@@ -6,6 +6,8 @@ import { Product } from './products.model';
 export class ProductsService {
   private products: Product[] = []
 
+  // Add Product
+
   insertProduct(title: string, desc: string, price: number) {
     const prodId = Math.random().toLocaleString()
     const newProduct = new Product(prodId, title, desc, price)
@@ -15,10 +17,12 @@ export class ProductsService {
     return prodId;
   }
 
+  // Get all Product
   getProducts() {
     return [...this.products]
   }
 
+  // Get single Product
   getSingleProduct(productId: string) {
     const product = this.findProduct(productId)[0]
 
@@ -26,6 +30,7 @@ export class ProductsService {
 
   }
 
+  // Update Product
   updateProduct(productId: string, title: string, desc: string, price: number) {
     const [product, index] = this.findProduct(productId)
     const updatedProduct = { ...product }
@@ -44,6 +49,17 @@ export class ProductsService {
     this.products[index] = updatedProduct;
 
   }
+
+  // Delete Product
+
+  deleteProduct(productId: string) {
+    const index = this.findProduct(productId)[1]
+    this.products.splice(index, 1)
+
+
+  }
+
+  // Find Product 
 
   private findProduct(id: string): [Product, number] {
     const productIndex = this.products.findIndex(prod => prod.id === id)
