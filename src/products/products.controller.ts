@@ -49,6 +49,11 @@ export class ProductsController {
     @Body('price') prodPrice: number
   ) {
     this.ProductsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice)
+
+    return {
+      status: 200,
+      message: `Product with id: ${prodId} is updated successfully`
+    }
   }
 
   // Delete Product
@@ -57,6 +62,7 @@ export class ProductsController {
   deleteProduct(@Param('id') prodId: string) {
     this.ProductsService.deleteProduct(prodId)
     return {
+      status: 200,
       message: `Products with ${prodId} deleted successfully`
     }
   }
