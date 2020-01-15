@@ -21,9 +21,9 @@ export class ProductsService {
 
     const result = await newProduct.save();
     console.log('The result', result)
-    // this.products.push(newProduct)
 
-    return 'prodId';
+
+    return { ...result }
   }
 
   // Get all Product

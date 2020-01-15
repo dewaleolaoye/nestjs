@@ -8,21 +8,25 @@ export class ProductsController {
 
   // Add Product
   @Post()
-  addProduct(
+  async addProduct(
     @Body('title') prodTitle: string,
     @Body('desc') prodDesc: string,
     @Body('price') prodPrice: number
-
-    // @Res() response: Response
   ) {
 
-    const generatedId = this.ProductsService.insertProduct(
+    const generatedId = await this.ProductsService.insertProduct(
       prodTitle,
       prodDesc,
       prodPrice
     );
 
-    return { id: generatedId }
+    // const {prodPrice, prodDesc, prodPrice} = generatedId
+    console.log('generated', generatedId._doc)
+    return {
+      status: 201,
+      message: `You 've successfully added ${prodTitle}`,
+      data: generatedId._doc
+    }
   }
 
   // Get all product
