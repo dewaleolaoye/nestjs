@@ -1,6 +1,5 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete, Res, Req } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { response } from 'express';
 
 @Controller('products')
 export class ProductsController {
@@ -20,21 +19,24 @@ export class ProductsController {
       prodPrice
     );
 
-    // const {prodPrice, prodDesc, prodPrice} = generatedId
-    console.log('generated', generatedId._doc)
     return {
       status: 201,
       message: `You 've successfully added ${prodTitle}`,
-      data: generatedId._doc
+      data: {
+        id: generatedId.id,
+        title: generatedId.title,
+        descritpion: generatedId.desc,
+        price: generatedId.price
+      }
     }
   }
 
   // Get all product
-
   @Get()
-  getAllProducts(): any {
+  async getAllProducts() {
 
-    return this.ProductsService.getProducts()
+    const products = await this.ProductsService.getProducts()
+    return products;
   }
 
   // Get a single product
@@ -47,25 +49,25 @@ export class ProductsController {
   // Update Product
 
   @Patch(':id')
-  updateProduct(
+  async updateProduct(
     @Param('id') prodId: string,
     @Body('title') prodTitle: string,
     @Body('desc') prodDesc: string,
     @Body('price') prodPrice: number
-  ) {
-    this.ProductsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice)
+  ): Promise<any> {
+    await this.ProductsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice)
 
     return {
       status: 200,
-      message: `Product with id: ${prodId} is updated successfully`
+      message: `Product is updated successfully`
     }
   }
 
   // Delete Product
 
   @Delete(':id')
-  deleteProduct(@Param('id') prodId: string) {
-    this.ProductsService.deleteProduct(prodId)
+  async deleteProduct(@Param('id') prodId: string) {
+    await this.ProductsService.deleteProduct(prodId)
     return {
       status: 200,
       message: `Products with ${prodId} deleted successfully`
